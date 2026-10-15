@@ -125,17 +125,24 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Live countdown timer for traffic signals
+  // Realistic adaptive signal cycling: green -> yellow -> red when normal, held green when priorityMode
   useEffect(() => {
     const interval = setInterval(() => {
       setSignals((prev) =>
         prev.map((sig) => {
           if (sig.timer <= 1) {
-            return {
-              ...sig,
-              timer: sig.state === 'green' ? 60 : 45,
-              state: 'green'
-            };
+            // Priority Preemption Mode: Hold GREEN
+            if (sig.priorityMode) {
+              return { ...sig, state: 'green', timer: 60 };
+            }
+            // Normal Autonomous Cycling: Green -> Yellow (3s) -> Red (25s) -> Green (35s)
+            if (sig.state === 'green') {
+              return { ...sig, state: 'yellow', timer: 3, phase: 'Clearance Amber' };
+            }
+            if (sig.state === 'yellow') {
+              return { ...sig, state: 'red', timer: 25, phase: 'Cross-Traffic Active' };
+            }
+            return { ...sig, state: 'green', timer: 35, phase: 'Arterial Flow Green' };
           }
           return { ...sig, timer: sig.timer - 1 };
         })
