@@ -84,39 +84,53 @@ export default function CctvSources({
                   </span>
                 </div>
 
-                {/* Simulated Video Preview Screen */}
+                {/* Real Video / Snapshot Preview Screen */}
                 <div className="relative bg-slate-950 rounded-sm aspect-video overflow-hidden border border-border flex items-center justify-center group mb-3">
-                  {/* Grid Lines Overlay */}
-                  <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]" />
+                  {/* Real Media Layer */}
+                  {cam.id === 'cam-01' ? (
+                    <video
+                      src="/traffic_sample.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover block"
+                    />
+                  ) : cam.id === 'cam-02' ? (
+                    <img src="/sample_bus.jpg" alt={cam.name} className="w-full h-full object-cover block" />
+                  ) : cam.id === 'cam-03' ? (
+                    <img src="/sample_ambulance.jpg" alt={cam.name} className="w-full h-full object-cover block" />
+                  ) : cam.id === 'cam-04' ? (
+                    <img src="/test_amb_1.jpg" alt={cam.name} className="w-full h-full object-cover block" />
+                  ) : cam.id === 'cam-05' ? (
+                    <img src="/amb3.jpg" alt={cam.name} className="w-full h-full object-cover block" />
+                  ) : (
+                    <img src="/amb4.jpg" alt={cam.name} className="w-full h-full object-cover block" />
+                  )}
+
+                  {/* Optical Scanline / Dark Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
 
                   {/* Camera Details Overlay */}
-                  <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] font-mono text-white">
+                  <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-black/75 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] font-mono text-white border border-white/10">
                     <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-success animate-pulse' : 'bg-warning'}`} />
                     <span>{cam.resolution}</span>
                     <span className="text-slate-400">|</span>
                     <span className="tabular-nums">{cam.fps.toFixed(1)} FPS</span>
                   </div>
 
-                  {/* Simulated Detection Box (On CAM-01 or active) */}
+                  {/* Detection Bounding Box on Cam-01 */}
                   {cam.id === 'cam-01' && (
-                    <div className="absolute inset-x-12 inset-y-8 border-2 border-accent rounded bg-accent/10 flex flex-col justify-between p-1.5 pointer-events-none">
-                      <div className="bg-accent text-white text-[9px] font-bold px-1 py-0.5 rounded self-start flex items-center gap-1 shadow-sm">
+                    <div className="absolute inset-x-12 inset-y-8 border-2 border-danger rounded bg-danger/15 flex flex-col justify-between p-1.5 pointer-events-none shadow-md">
+                      <div className="bg-danger text-white text-[9px] font-extrabold px-1 py-0.5 rounded self-start flex items-center gap-1 shadow-sm">
                         <ShieldAlert className="w-2.5 h-2.5" />
-                        <span>AMBULANCE: 94.2%</span>
+                        <span>AMBULANCE #AB-901</span>
                       </div>
-                      <div className="text-[9px] text-accent font-mono self-end">
+                      <div className="text-[9px] text-danger font-mono font-bold self-end bg-black/80 px-1 rounded">
                         CONF: 0.942
                       </div>
                     </div>
                   )}
-
-                  {/* Center info */}
-                  <div className="text-center p-4">
-                    <Video className="w-8 h-8 text-slate-600 mx-auto mb-1 group-hover:text-accent transition-colors" />
-                    <div className="text-[11px] font-mono text-slate-400">
-                      RTSP://10.14.2.{cam.id.slice(4)}:554/live
-                    </div>
-                  </div>
 
                   {/* Active Monitor Indicator */}
                   {isSelected && (

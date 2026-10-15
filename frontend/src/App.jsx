@@ -372,7 +372,7 @@ export default function App() {
             )}
 
             {activePage === 'route' && (
-              <RouteMap showToast={showToast} />
+              <RouteMap signals={signals} showToast={showToast} />
             )}
 
             {activePage === 'signals' && (

@@ -18,6 +18,7 @@ import {
   Layers,
   Camera
 } from 'lucide-react';
+import CorridorGisMap from '../components/CorridorGisMap';
 
 export default function LiveMonitor({ 
   signals, 
@@ -279,68 +280,33 @@ export default function LiveMonitor({
           <div className="card-header">
             <div className="card-title">
               <MapPin className="w-4 h-4 text-accent" />
-              <span>Corridor Path (Abbottabad Grid)</span>
+              <span>Corridor GIS Map (Abbottabad Grid)</span>
             </div>
-            <div className="flex items-center gap-2 text-[11px] font-semibold text-text-secondary">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-success" /> Green</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-danger" /> Unit</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-accent" /> Hospital</span>
-            </div>
+            <button 
+              onClick={() => onNavigate('route')}
+              className="btn btn-secondary text-[11px] py-1 px-2 flex items-center gap-1"
+            >
+              <span>Widescreen Map</span>
+              <ChevronRight className="w-3 h-3" />
+            </button>
           </div>
 
-          {/* SVG Map Canvas */}
-          <div className="flex-1 min-h-[260px] bg-slate-950 rounded-sm border border-border relative overflow-hidden flex items-center justify-center">
-            <svg className="w-full h-full block" viewBox="0 0 500 300">
-              {/* Roads */}
-              <path d="M40 150 L460 150" stroke="#334155" strokeWidth="14" fill="none" />
-              <path d="M120 40 L120 260" stroke="#1e293b" strokeWidth="8" fill="none" />
-              <path d="M220 40 L220 260" stroke="#1e293b" strokeWidth="8" fill="none" />
-              <path d="M320 40 L320 260" stroke="#1e293b" strokeWidth="8" fill="none" />
-              <path d="M420 40 L420 260" stroke="#1e293b" strokeWidth="8" fill="none" />
-
-              {/* Green Corridor Wave */}
-              <path 
-                d="M40 150 L460 150" 
-                stroke="var(--success)" 
-                strokeWidth="6" 
-                strokeDasharray="10 6" 
-                className="animate-corridor-dash" 
-                fill="none" 
-              />
-
-              {/* Intersections */}
-              {signals.map((sig, idx) => {
-                const cx = 120 + idx * 100;
-                return (
-                  <g key={sig.id}>
-                    <circle cx={cx} cy="150" r="10" fill="var(--success)" />
-                    <text x={cx} y="180" fill="#94a3b8" fontSize="10" fontWeight="700" textAnchor="middle">
-                      Int-0{sig.id} ({sig.timer}s)
-                    </text>
-                  </g>
-                );
-              })}
-
-              {/* Moving Ambulance Beacon */}
-              <g transform="translate(170, 150)">
-                <circle cx="0" cy="0" r="12" fill="none" stroke="var(--danger)" className="beacon-ripple" />
-                <circle cx="0" cy="0" r="12" fill="var(--danger)" stroke="#ffffff" strokeWidth="2" />
-                <path d="M-5 -2 H-2 V-5 H2 V-2 H5 V2 H2 V5 H-2 V2 H-5 Z" fill="#ffffff" />
-              </g>
-
-              {/* Destination Hospital Marker */}
-              <g transform="translate(460, 150)">
-                <rect x="-14" y="-14" width="28" height="28" rx="4" fill="var(--accent)" stroke="#ffffff" strokeWidth="2" />
-                <path d="M-6 -2 H-2 V-6 H2 V-2 H6 V2 H2 V6 H-2 V2 H-6 Z" fill="#ffffff" />
-              </g>
-            </svg>
+          {/* High-Fidelity GIS Vector Canvas */}
+          <div className="flex-1 min-h-[290px] rounded-sm border border-border overflow-hidden">
+            <CorridorGisMap
+              signals={signals}
+              destination="HOSPITAL_CITY"
+              destinationName="City General Hospital"
+              compact={true}
+              showToast={showToast}
+            />
           </div>
 
           <button 
             onClick={() => onNavigate('route')}
             className="btn btn-secondary w-full justify-center mt-3 text-xs"
           >
-            <span>Open Full Interactive Corridor Map</span>
+            <span>Open Full Interactive Corridor Navigation</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>

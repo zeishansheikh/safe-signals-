@@ -11,8 +11,9 @@ import {
   Cpu,
   Compass
 } from 'lucide-react';
+import CorridorGisMap from '../components/CorridorGisMap';
 
-export default function RouteMap({ showToast }) {
+export default function RouteMap({ signals, showToast }) {
   const [ambulanceX, setAmbulanceX] = useState(120);
   const [simSpeed, setSimSpeed] = useState(1);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -102,63 +103,15 @@ export default function RouteMap({ showToast }) {
             </div>
           </div>
 
-          {/* Widescreen SVG Map Canvas */}
-          <div className="flex-1 min-h-[380px] bg-slate-950 rounded-sm border border-border relative overflow-hidden flex items-center justify-center p-2">
-            <svg className="w-full h-full block" viewBox="0 0 720 420">
-              {/* Arterial Corridors */}
-              <path d="M50 210 L670 210" stroke="#334155" strokeWidth="22" fill="none" />
-              <path d="M150 50 L150 370" stroke="#1e293b" strokeWidth="12" fill="none" />
-              <path d="M290 50 L290 370" stroke="#1e293b" strokeWidth="12" fill="none" />
-              <path d="M430 50 L430 370" stroke="#1e293b" strokeWidth="12" fill="none" />
-              <path d="M570 50 L570 370" stroke="#1e293b" strokeWidth="12" fill="none" />
-
-              {/* Preempted Green Wave Line */}
-              <path 
-                d="M50 210 L670 210" 
-                stroke="var(--success)" 
-                strokeWidth="8" 
-                strokeDasharray="14 8" 
-                className="animate-corridor-dash" 
-                fill="none" 
-              />
-
-              {/* Intersections Along Route */}
-              <g transform="translate(150, 210)">
-                <circle cx="0" cy="0" r="14" fill="var(--success)" />
-                <text x="0" y="32" fill="#94a3b8" fontSize="11" fontWeight="700" textAnchor="middle">Int-01 Jinnah</text>
-              </g>
-
-              <g transform="translate(290, 210)">
-                <circle cx="0" cy="0" r="14" fill="var(--success)" />
-                <text x="0" y="32" fill="#94a3b8" fontSize="11" fontWeight="700" textAnchor="middle">Int-02 Cantt</text>
-              </g>
-
-              <g transform="translate(430, 210)">
-                <circle cx="0" cy="0" r="14" fill="var(--success)" />
-                <text x="0" y="32" fill="#94a3b8" fontSize="11" fontWeight="700" textAnchor="middle">Int-03 Mandian</text>
-              </g>
-
-              <g transform="translate(570, 210)">
-                <circle cx="0" cy="0" r="14" fill="var(--success)" />
-                <text x="0" y="32" fill="#94a3b8" fontSize="11" fontWeight="700" textAnchor="middle">Int-04 Hospital</text>
-              </g>
-
-              {/* Dynamic Moving Ambulance Beacon */}
-              <g transform={`translate(${ambulanceX}, 210)`}>
-                <circle cx="0" cy="0" r="16" fill="none" stroke="var(--danger)" className="beacon-ripple" />
-                <circle cx="0" cy="0" r="16" fill="var(--danger)" stroke="#ffffff" strokeWidth="2.5" />
-                <path d="M-6 -2 H-2 V-6 H2 V-2 H6 V2 H2 V6 H-2 V2 H-6 Z" fill="#ffffff" />
-              </g>
-
-              {/* Destination Hospital Marker */}
-              <g transform="translate(670, 210)">
-                <rect x="-18" y="-18" width="36" height="36" rx="6" fill="var(--accent)" stroke="#ffffff" strokeWidth="2" />
-                <path d="M-8 -3 H-3 V-8 H3 V-3 H8 V3 H3 V8 H-3 V3 H-8 Z" fill="#ffffff" />
-                <text x="0" y="32" fill="var(--accent)" fontSize="11" fontWeight="800" textAnchor="middle">
-                  {selectedDest === 'HOSPITAL_TRAUMA' ? 'Ayub Trauma' : 'City Hospital'}
-                </text>
-              </g>
-            </svg>
+          {/* Widescreen Interactive Corridor GIS Map */}
+          <div className="flex-1 min-h-[420px] rounded-sm border border-border overflow-hidden">
+            <CorridorGisMap
+              signals={signals}
+              destination={selectedDest}
+              destinationName={routeData.destination_name}
+              compact={false}
+              showToast={showToast}
+            />
           </div>
 
           {/* Speed Controls Strip */}
