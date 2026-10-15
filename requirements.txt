@@ -1,0 +1,19 @@
+# Core Deep Learning & Computer Vision
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Graph Routing & Pathfinding
+networkx>=3.0
+
+# Web Dashboard & Visualization
+streamlit>=1.30.0
+
+# Ambulance Model Inference & Configuration
+inference-sdk>=1.7.0
+python-dotenv>=1.0.0
+
+# Testing & Quality Assurance
+pytest>=7.4.0
