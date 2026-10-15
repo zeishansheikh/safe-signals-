@@ -33,7 +33,7 @@ export default function LiveMonitor({
               <Video className="w-4 h-4 text-accent" />
               <span>Live CCTV Camera Feed — CCTV-01 (Main Blvd)</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => {
                   setIsOffline(!isOffline);
@@ -43,6 +43,14 @@ export default function LiveMonitor({
               >
                 <EyeOff className="w-3.5 h-3.5" />
                 <span>{isOffline ? 'Restore Feed' : 'Simulate Offline'}</span>
+              </button>
+              <button
+                onClick={onTriggerRescue}
+                className="btn btn-primary text-xs font-bold"
+                title="Send ambulance detection signal through Python YOLOv8 & debounce pipeline"
+              >
+                <Zap className="w-3.5 h-3.5 text-warning" />
+                <span>Trigger AI Detection</span>
               </button>
               <button
                 onClick={onTriggerRescue}
