@@ -18,6 +18,7 @@ export default function Header({
   onSelectPage,
   user,
   isAuthenticated,
+  backendConnected,
   onOpenAuth,
   onOpenReadiness,
   onOpenFaq
@@ -82,6 +83,16 @@ export default function Header({
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-success-surface border border-success-border text-success text-xs font-bold">
             <span className="w-2 h-2 rounded-full bg-success animate-pulse-dot" />
             <span>Green Corridor Active</span>
+          </div>
+
+          {/* Real Backend API Status Badge */}
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border transition-colors ${
+            backendConnected 
+              ? 'bg-success-surface border-success-border text-success' 
+              : 'bg-surface-elevated border-border text-text-muted'
+          }`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${backendConnected ? 'bg-success animate-pulse' : 'bg-slate-400'}`} />
+            <span>{backendConnected ? 'Python API: Live (8000)' : 'API: Standby'}</span>
           </div>
 
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-surface-elevated border border-border text-xs font-bold text-text-secondary">

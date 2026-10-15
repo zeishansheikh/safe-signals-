@@ -104,6 +104,27 @@ export default function App() {
     showToast(`Interface switched to ${nextTheme.toUpperCase()} mode.`);
   };
 
+  // Backend API connectivity status
+  const [backendConnected, setBackendConnected] = useState(false);
+
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/status');
+        if (res.ok) {
+          setBackendConnected(true);
+        } else {
+          setBackendConnected(false);
+        }
+      } catch (err) {
+        setBackendConnected(false);
+      }
+    };
+    checkBackend();
+    const interval = setInterval(checkBackend, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Live countdown timer for traffic signals
   useEffect(() => {
     const interval = setInterval(() => {
@@ -271,6 +292,7 @@ export default function App() {
         onSelectPage={setActivePage}
         user={user}
         isAuthenticated={isAuthenticated}
+        backendConnected={backendConnected}
         onOpenAuth={() => setIsAuthOpen(true)}
         onOpenReadiness={() => setIsReadinessOpen(true)}
         onOpenFaq={() => setActivePage('faq')}
